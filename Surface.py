@@ -27,7 +27,7 @@ class Surface:
         lable = self.helv24.render(text, 1, color)
         self.surface.blit(lable, position)
 
-    def create(self, diters, countOfVertexs):
+    def create(self, diters, countOfVertexs, distances):
         self.surface.fill(c.COLORS["WHITE"])
         self.surface.fill(c.COLORS["LIGHTYELLOW"], (0, 0, 2 * SIZE + DELIM_WIDTH, STATUS_HEIGHT))
         self.surface.fill(c.COLORS["DARKBLUE"], (0, STATUS_HEIGHT, DELIM_WIDTH, SIZE + STATUS_HEIGHT2))
@@ -39,7 +39,7 @@ class Surface:
         self.draw_text("Iterations:", (30, STATUS_HEIGHT + 30), c.COLORS["BLACK"])
         self.draw_text(str(diters), (150, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
         self.draw_text("Tour Length:", (260, STATUS_HEIGHT + 30), c.COLORS["BLACK"])
-        self.draw_text(str(diters), (410, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
+        self.draw_text(str(distances[diters]), (410, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
 
     def drawCity(self, x, y):
         pygame.draw.circle(self.surface, c.COLORS["PINK"], [int(x), int(y)], CITY_RADIUS)

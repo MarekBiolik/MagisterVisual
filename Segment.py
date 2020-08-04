@@ -54,10 +54,12 @@ class Segment:
         #print("c", b)
         #print("c", c)
         d = (b * b) - (4 * a * c)
-        # assert d == 0 TODO
-        #print(d)
-        licznik1 = -1 * b + math.sqrt(d)
-        licznik2 = -1 * b - math.sqrt(d)
+        if (d < 0.001 and d > -0.001):
+            licznik1 = -1 * b
+            licznik2 = licznik1
+        else:
+            licznik1 = -1 * b + math.sqrt(d)
+            licznik2 = -1 * b - math.sqrt(d)
         mianownik = 2 * a
         xs1 = licznik1 / mianownik
         ys1 = ap * xs1 + bp

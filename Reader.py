@@ -43,17 +43,26 @@ def decodeType(decodeSegment):
     }
     return switcher.get(decodeSegment, "Invalid month")
 
-def readSegments(fileWithPath):
+def readSegments(fileWithPath, segmentsInOneIteration):
+    segmentsInOneIteration2 = segmentsInOneIteration + 1
     segments = []
+    i = 1
+    distances = []
+    segmentsInOneIteration = segmentsInOneIteration2
     with open(fileWithPath) as file:
         for row in file:
-            xas, yas, decodeSegment, xbs, ybs, lengthStr = row.split()
-            xa = float(xas)
-            ya = float(yas)
-            xb = float(xbs)
-            yb = float(ybs)
-            length = float(lengthStr)
-            typeOfSegment = decodeType(decodeSegment)
-            segments.append(Segment(xa, ya, typeOfSegment, xb, yb, length))
+            if i == segmentsInOneIteration:
+                distances.append(float(row))
+                segmentsInOneIteration += segmentsInOneIteration2
+            else:
+                xas, yas, decodeSegment, xbs, ybs, lengthStr = row.split()
+                xa = float(xas)
+                ya = float(yas)
+                xb = float(xbs)
+                yb = float(ybs)
+                length = float(lengthStr)
+                typeOfSegment = decodeType(decodeSegment)
+                segments.append(Segment(xa, ya, typeOfSegment, xb, yb, length))
+            i += 1
 
-    return segments
+    return segments, distances
