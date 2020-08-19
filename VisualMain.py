@@ -15,21 +15,25 @@ def chunk(segmentsAll, segmentsInOneIteration, iteration):
 
 def mainloop():
     diters = 0
-    radius, fileWithVertexs, fileWithPath = Reader.readSettings()
+    numberOfVertexs, radius, radiusNeighbour, fileWithVertexs, fileWithPath = Reader.readSettings()
     vertexs = Reader.readCoords(fileWithVertexs)
     countOfVertexs = len(vertexs)
-    segmentsInOneIteration = countOfVertexs * 3
+    segmentsInOneIteration = numberOfVertexs * 3
     segments, distances = Reader.readSegments(fileWithPath, segmentsInOneIteration)
-    segmentsInOneIteration = countOfVertexs * 3
     iteration = int(len(segments) / segmentsInOneIteration)
     segmentsTab = chunk(segments, segmentsInOneIteration, iteration)
     sur = Surface()
     while True:
         sur.create(diters, countOfVertexs, distances)
         for point in vertexs:
-            sur.drawCity(point.x, point.y)
+            sur.drawCity(point.x, point.y, radiusNeighbour)
+        i = 0
         for segment in segmentsTab[diters]:
-            sur.drawSegment(segment, radius)
+            if (i % 3 == 0):
+                sur.drawSegment(segment, radius, True)
+            else:
+                sur.drawSegment(segment, radius, False)
+            i += 1
         sur.updateGraphicsOutput()
         diters += 1
         if (diters == iteration):

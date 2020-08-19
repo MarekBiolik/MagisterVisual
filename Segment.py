@@ -115,6 +115,6 @@ class Segment:
         #print('kupa2', result1)
         #print('kupa2', result2)
         if (self.typeOfSegment == SegmentType.Right):
-            return (xs - r, ys - r, 2 * r, 2 * r), result1, result2
+            return (xs + 100 - r, ys + 100 - r, 2 * r, 2 * r), result1, result2
         else:
-            return (xs - r, ys - r, 2 * r, 2 * r), result2, result1
+            return (xs + 100 - r, ys + 100 - r, 2 * r, 2 * r), result2, result1

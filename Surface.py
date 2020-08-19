@@ -41,8 +41,9 @@ class Surface:
         self.draw_text("Tour Length:", (260, STATUS_HEIGHT + 30), c.COLORS["BLACK"])
         self.draw_text(str(distances[diters]), (410, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
 
-    def drawCity(self, x, y):
-        pygame.draw.circle(self.surface, c.COLORS["PINK"], [int(x), int(y)], CITY_RADIUS)
+    def drawCity(self, x, y, radiusNeighbour):
+        pygame.draw.circle(self.surface, c.COLORS["PINK"], [int(x) + 100, int(y) + 100], CITY_RADIUS)
+        pygame.draw.circle(self.surface, c.COLORS["GREEN"], [int(x) + 100, int(y) + 100], radiusNeighbour, 2)
 
     def updateGraphicsOutput(self):
         pygame.display.flip()
@@ -51,7 +52,7 @@ class Surface:
         point, fstPoint, sndPoint = segment.calculateArc(r)
         xb = segment.sndPoint.x
         yb = segment.sndPoint.y
-        pygame.draw.circle(self.surface, c.COLORS["BLUE"], [int(xb), int(yb)], 4)
+        pygame.draw.circle(self.surface, c.COLORS["BLUE"], [int(xb) + 100, int(yb) + 100], 4)
         pygame.draw.arc(self.surface, c.COLORS["BLUE"], point, fstPoint, sndPoint, 3)
 
     def drawStraigh(self, segment):
@@ -61,11 +62,19 @@ class Surface:
         ya = fstPoint.y
         xb = sndPoint.x
         yb = sndPoint.y
-        pygame.draw.circle(self.surface, c.COLORS["BLUE"], [int(xb), int(yb)], 4)
+        pygame.draw.circle(self.surface, c.COLORS["BLUE"], [int(xb + 100), int(yb + 100)], 4)
         pygame.draw.line(self.surface, c.COLORS["DARKGREY"],
-                         [xa, ya], [xb, yb], 3)
+                         [xa + 100, ya + 100], [xb + 100, yb + 100], 3)
 
-    def drawSegment(self, segment, r):
+    def drawStartPoint(self, segment):
+        fstPoint = segment.fstPoint
+        xa = fstPoint.x
+        ya = fstPoint.y
+        pygame.draw.circle(self.surface, c.COLORS["BROWN"], [int(xa + 100), int(ya + 100)], 8)
+
+    def drawSegment(self, segment, r, drawStartPoint):
+        if (drawStartPoint):
+            self.drawStartPoint(segment)
         if (segment.typeOfSegment == SegmentType.Stra):
             self.drawStraigh(segment)
         else:
