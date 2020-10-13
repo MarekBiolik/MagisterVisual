@@ -18,6 +18,18 @@ class Segment:
         self.sndPoint = Point(xb, yb)
         self.length = length
 
+    def delta(self, a, b, c):
+        d = (b * b) - (4 * a * c)
+        if (abs(d) < 0.001):
+            licznik1 = -1 * b
+            licznik2 = licznik1
+        else:
+            print(d)
+            licznik1 = -1 * b + math.sqrt(d)
+            licznik2 = -1 * b - math.sqrt(d)
+        mianownik = 2 * a
+        return licznik1 / mianownik, licznik2 / mianownik
+
     def findMiddleOfCircle(self, r):
         # assert A == B TODO
         # assert type == S TODO
@@ -26,45 +38,49 @@ class Segment:
         ya = self.fstPoint.y
         xb = self.sndPoint.x
         yb = self.sndPoint.y
+        print(f"{xa} {ya}")
+        print(f"{xb} {yb}")
         # print(f"xa {xa} ya {ya} xb {xb} yb {yb}")
         xc = (xa + xb)/2
         yc = (ya + yb)/2
         # prost prostopadła do prosta przez A i B
-        if (xa == xb):
+        if (abs(xa - xb) < 0.001):
             at = 0
             #bt = xa
             ap = 0
             bp = yc
+            print("równe")
+            a = 1 + (ap * ap)
+            b = 2 * ((ap * bp) - (ap * ya) - xa)
+            c = (xa * xa) + (bp * bp) + (ya * ya) - (2 * bp * ya) - (r * r)
+
+            xs1, xs2 = self.delta(a, b, c)
+            ys1 = ap * xs1 + bp
+            ys2 = ap * xs2 + bp
         else:
             at = (ya-yb)/(xa-xb) # a prostej przez A i B
             #bt = ya - at * xa
-            if (at == 0):
-                ap = 0
+            if (abs(at) < 0.001):
                 bp = xc
+                print("ap 0")
+                a = 1
+                b = (-2) * (ya * ya)
+                c = (ya * ya) - (r * r) + ((bp - xa) * (bp - xa))
+
+                ys1, ys2 = self.delta(a, b, c)
+                xs1 = xc
+                xs2 = xc
             else:
                 ap = -1/at
                 bp = yc +  ((xa - xb)/(ya - yb)) * xc
+                a = 1 + (ap * ap)
+                b = 2 * ((ap * bp) - (ap * ya) - xa)
+                c = (xa * xa) + (bp * bp) + (ya * ya) - (2 * bp * ya) - (r * r)
 
-        #print(ap)
-        #print(bp)
-        a = 1 + (ap * ap)
-        b = 2 * ((ap * bp) - (ap * ya) - xa)
-        c = (xa * xa) + (bp * bp) + (ya * ya) - (2 * bp * ya) - (r * r)
-        #print("c", a)
-        #print("c", b)
-        #print("c", c)
-        d = (b * b) - (4 * a * c)
-        if (d < 0.001 and d > -0.001):
-            licznik1 = -1 * b
-            licznik2 = licznik1
-        else:
-            licznik1 = -1 * b + math.sqrt(d)
-            licznik2 = -1 * b - math.sqrt(d)
-        mianownik = 2 * a
-        xs1 = licznik1 / mianownik
-        ys1 = ap * xs1 + bp
-        xs2 = licznik2 / mianownik
-        ys2 = ap * xs2 + bp
+                xs1, xs2 = self.delta(a, b, c)
+                ys1 = ap * xs1 + bp
+                ys2 = ap * xs2 + bp
+
 
         # p0 A, p1 B, p2 S
         # p1 - p0

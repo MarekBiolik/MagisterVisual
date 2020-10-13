@@ -20,19 +20,20 @@ def readCoords(fileWithVertexs):
             y = float(ys)
             #xi = resize(xMin, xMax, x)
             #yi = resize(yMin, yMax, y)
-            vertexs.append(Point(x, y))
+            vertexs.append(Point(x,y))
 
     return vertexs
 
 def readSettings():
     datas = []
-    with open('data/settings.txt') as file:
+    with open('data/DTSPNvis2/settings.txt') as file:
         for row in file:
             datas.append(row)
 
     numberOfVertex = int(datas[0])
-    radius = int(datas[1])
-    radiusNeighbour = int(datas[2])
+    radius = float(datas[1])
+    radiusNeighbour = float(datas[2])
+    print(radiusNeighbour)
     fileWithVertexs = "data/" + datas[3].rstrip() + ".txt"
     fileWithPath = "data/" + datas[3].rstrip() + "_out.txt"
     return numberOfVertex, radius, radiusNeighbour, fileWithVertexs, fileWithPath

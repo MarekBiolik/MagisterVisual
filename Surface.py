@@ -11,6 +11,7 @@ STATUS_HEIGHT2 = 10  # height of status bar within instance subwindows
 DELIM_WIDTH = 5      # width of delimiter between direct and sim. ann. output
 CITY_RADIUS = 7      # radius of circle representing city
 SLEEP = 400          # delay (in seconds) after plotting new configuration
+dodatekDol = 0
 
 class Surface:
 
@@ -18,7 +19,7 @@ class Surface:
         pygame.init()
         self.helv24 = pygame.font.SysFont("Helvetica", 24)
         self.SWIDTH = SIZE + DELIM_WIDTH + DELIM_WIDTH
-        self.SHEIGHT = SIZE + STATUS_HEIGHT + STATUS_HEIGHT2
+        self.SHEIGHT = SIZE + STATUS_HEIGHT + STATUS_HEIGHT2 + dodatekDol
         self.surface = pygame.display.set_mode((self.SWIDTH, self.SHEIGHT))
         self.surface.set_alpha(None)
 
@@ -27,23 +28,31 @@ class Surface:
         lable = self.helv24.render(text, 1, color)
         self.surface.blit(lable, position)
 
-    def create(self, diters, countOfVertexs, distances):
+    def create(self):
         self.surface.fill(c.COLORS["WHITE"])
         self.surface.fill(c.COLORS["LIGHTYELLOW"], (0, 0, 2 * SIZE + DELIM_WIDTH, STATUS_HEIGHT))
-        self.surface.fill(c.COLORS["DARKBLUE"], (0, STATUS_HEIGHT, DELIM_WIDTH, SIZE + STATUS_HEIGHT2))
-        self.surface.fill(c.COLORS["DARKBLUE"], (SIZE + DELIM_WIDTH, STATUS_HEIGHT, DELIM_WIDTH, SIZE + STATUS_HEIGHT2))
-        self.surface.fill(c.COLORS["DARKBLUE"], (0, SIZE + STATUS_HEIGHT + STATUS_HEIGHT2 - DELIM_WIDTH, 2 * SIZE + DELIM_WIDTH, DELIM_WIDTH)) # dol
+        self.surface.fill(c.COLORS["DARKBLUE"], (0, STATUS_HEIGHT, DELIM_WIDTH, dodatekDol+SIZE + STATUS_HEIGHT2))
+        self.surface.fill(c.COLORS["DARKBLUE"], (SIZE + DELIM_WIDTH, STATUS_HEIGHT, DELIM_WIDTH, dodatekDol+SIZE + STATUS_HEIGHT2))
+        self.surface.fill(c.COLORS["DARKBLUE"], (0, + dodatekDol+SIZE + STATUS_HEIGHT + STATUS_HEIGHT2 - DELIM_WIDTH, 2 * SIZE + DELIM_WIDTH, DELIM_WIDTH)) # dol
         self.surface.fill(c.COLORS["DARKBLUE"], (0, STATUS_HEIGHT, 2 * SIZE + DELIM_WIDTH, DELIM_WIDTH)) # gora
-        self.draw_text("No of cities:", (110, 15), c.COLORS["BLACK"])
-        self.draw_text(str(countOfVertexs), (250, 15), c.COLORS["BLUE"])
-        self.draw_text("Iterations:", (30, STATUS_HEIGHT + 30), c.COLORS["BLACK"])
-        self.draw_text(str(diters), (150, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
-        self.draw_text("Tour Length:", (260, STATUS_HEIGHT + 30), c.COLORS["BLACK"])
-        self.draw_text(str(distances[diters]), (410, STATUS_HEIGHT + 32), c.COLORS["BLUE"])
+        pygame.draw.line(self.surface, c.COLORS["LAVENDER"],[100, 100], [900, 100], 1)
+        pygame.draw.line(self.surface, c.COLORS["LAVENDER"],[900, 100], [900, 900], 1)
+        pygame.draw.line(self.surface, c.COLORS["LAVENDER"],[100, 900], [900, 900], 1)
+        pygame.draw.line(self.surface, c.COLORS["LAVENDER"],[100, 100], [100, 900], 1)
+
+    def createResults(self, diters, countOfVertexs, countOfVertexsAterCO, distances):
+        self.draw_text("Liczba obszarów:", (10, 15), c.COLORS["BLACK"])
+        self.draw_text(str(countOfVertexs + 1), (200, 15), c.COLORS["BLUE"])
+        self.draw_text("Liczba obszarów po wydzieleniu wspólnych:", (10, 45), c.COLORS["BLACK"])
+        self.draw_text(str(countOfVertexsAterCO), (470, 45), c.COLORS["BLUE"])
+        self.draw_text("Iteracja:", (850, 15), c.COLORS["BLACK"])
+        self.draw_text(str(diters), (950, 15), c.COLORS["BLUE"])
+        self.draw_text("Długość trasy:", (10, 75), c.COLORS["BLACK"])
+        self.draw_text(str((distances[diters]*1.0)/1.0), (165, 75), c.COLORS["BLUE"])
 
     def drawCity(self, x, y, radiusNeighbour):
-        pygame.draw.circle(self.surface, c.COLORS["PINK"], [int(x) + 100, int(y) + 100], CITY_RADIUS)
-        pygame.draw.circle(self.surface, c.COLORS["GREEN"], [int(x) + 100, int(y) + 100], radiusNeighbour, 2)
+        pygame.draw.circle(self.surface, c.COLORS["LIGHTRED"], [int(x) + 100, int(y) + 100], CITY_RADIUS)
+        pygame.draw.circle(self.surface, c.COLORS["LIGHTGREEN"], [int(x) + 100, int(y) + 100], int(radiusNeighbour), 2)
 
     def updateGraphicsOutput(self):
         pygame.display.flip()
@@ -63,7 +72,7 @@ class Surface:
         xb = sndPoint.x
         yb = sndPoint.y
         pygame.draw.circle(self.surface, c.COLORS["BLUE"], [int(xb + 100), int(yb + 100)], 4)
-        pygame.draw.line(self.surface, c.COLORS["DARKGREY"],
+        pygame.draw.line(self.surface, c.COLORS["BLACK"],
                          [xa + 100, ya + 100], [xb + 100, yb + 100], 3)
 
     def drawStartPoint(self, segment):

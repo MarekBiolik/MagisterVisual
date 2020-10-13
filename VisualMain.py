@@ -24,7 +24,7 @@ def mainloop():
     segmentsTab = chunk(segments, segmentsInOneIteration, iteration)
     sur = Surface()
     while True:
-        sur.create(diters, countOfVertexs, distances)
+        sur.create()
         for point in vertexs:
             sur.drawCity(point.x, point.y, radiusNeighbour)
         i = 0
@@ -34,6 +34,7 @@ def mainloop():
             else:
                 sur.drawSegment(segment, radius, False)
             i += 1
+        sur.createResults(diters, countOfVertexs, numberOfVertexs, distances)
         sur.updateGraphicsOutput()
         diters += 1
         if (diters == iteration):
@@ -41,6 +42,6 @@ def mainloop():
             break
         time.sleep(0)
     
-    time.sleep(1000)
+    time.sleep(100000)
 
 mainloop()
